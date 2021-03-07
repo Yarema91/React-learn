@@ -2,9 +2,7 @@ const Balance = ({balance}) => {
     return (
         <div>
            
-            {balance  === 0 ? 'Only null' 
-            : balance < 0 ? 'negative': 'positive'}
-            {balance}
+           Current balance: {balance}
         </div>
     )
 }
