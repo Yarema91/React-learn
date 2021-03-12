@@ -1,68 +1,49 @@
-import React, {Component} from 'react';
-import Balance from '../Balance';
-import Transactions from '../Transactions';
-import Form from '../Form';
+// import React, { Component } from 'react';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link
+} from "react-router-dom";
+import Home from '../Home';
+import About from '../About';
+import Statistic from '../Statistic';
+import { Wrapper, GlobalStyle } from './styles';
 
+const App = () => {
 
-// let id = 0;
-class App extends Component {
-     constructor() {
-         super();
-         this.state = {
-             balance: 0,
-             transactions: []
-            
+    return (
+        <Router>
+            <Wrapper >
+                <GlobalStyle />
+                <nav>
+                    <ul>
+                        <li>
+                            <Link to="/">Home</Link>
+                        </li>
+                        <li>
+                            <Link to="/statistic">Statistic</Link>
+                        </li>
+                        <li>
+                            <Link to="/about">About</Link>
+                        </li>
+                    </ul>
+                </nav>
 
-         }
-    this.onChange = this.onChange.bind(this);
-    // this.onDecrease = this.onDecrease.bind(this);
-    console.log('constructor');
-     }
-    onChange = (value) => {
-        this.setState((state) => ({ 
-            balance: state.balance + Number(value),
-            transactions: [{
-                 value,
-                 label: 'change',
-                 id: ++id
-                },...state.transactions]
-            }))
-    }
-
-    //  onIncrease () {
-    //     this.setState((state) => ({
-    //         balance: this.state.balance + 1,
-    //         transactions: [{
-    //             label: 'increase',
-    //             value: 1,
-    //             id: ++id
-    //         }, ...state.transactions]
-    //     }))
-    //  }
-    //  onDecrease = () => {
-    //     this.setState((state) => ({
-    //         balance: this.state.balance - 1,
-    //         transactions: [{
-    //             label: 'decrease',
-    //             value: -1,
-    //             id: ++id
-    //         }, ...state.transactions]
-    //     }))
-    // }
-
-     render() {
-        console.log('render');
-        return (
-            
-            < >
-                <Balance balance={this.state.balance}/>
-                <Form onChange={this.onChange}/>
-                <hr/>
-                <Transactions transactions={this.state.transactions}/>
-            </>
-            )
-     }
-     
+                <Switch>
+                    <Route path="/about">
+                        <About />
+                    </Route>
+                    <Route path="/statistic">
+                        <Statistic />
+                    </Route>
+                    <Route exect path="/">
+                        <Home />
+                    </Route>
+                </Switch>
+            </Wrapper>
+        </Router>
+    )
 }
 
 export default App;
