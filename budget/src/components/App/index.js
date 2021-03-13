@@ -1,34 +1,45 @@
-// import React, { Component } from 'react';
+import React from 'react';
 import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
 } from "react-router-dom";
+import {open} from '../../utils/indexdb'; 
 import Home from '../Home';
 import About from '../About';
 import Statistic from '../Statistic';
+import Header from '../Header';
 import { Wrapper, GlobalStyle } from './styles';
 
-const App = () => {
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            loading: true
+        } 
+    }
+
+    componentDidMount() {
+        open().then(() => {
+            this.setState({
+                loading: false
+            })
+        }).catch(() => {
+            console.error('Помилка');
+        })
+    }
+
+render() {
+    if(this.state.loading) {
+        return <div>loading...</div>
+    };
 
     return (
         <Router>
             <Wrapper >
                 <GlobalStyle />
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/statistic">Statistic</Link>
-                        </li>
-                        <li>
-                            <Link to="/about">About</Link>
-                        </li>
-                    </ul>
-                </nav>
+                <Header/>
 
                 <Switch>
                     <Route path="/about">
@@ -44,6 +55,8 @@ const App = () => {
             </Wrapper>
         </Router>
     )
+}
+   
 }
 
 export default App;

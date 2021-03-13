@@ -5,31 +5,39 @@ const DB_NAME = 'budget';
 html5rocks.indexedDB = {};
 html5rocks.indexedDB.db = null;
 
-html5rocks.indexedDB.onerror = (e) => {
+html5rocks.indexedDB.onerror = function(e) {
 console.log(e);
 };
 
-function open(e) {
-    return new Promise(function (resilve, reject) {
+function open() {
+    return new Promise(function (resolve, reject) {
         const request = indexedDB.open( DB_NAME, DB_VERSION);
 
         // WE can't only create Object stores  in a version change to transform 
-         
         request.onupgradeneeded = (e) => {
-            const bd = e.target.result;
+
+            const db = e.target.result;
             // a version change to transform is  started
-            e.target.transaction.onerror = html5rocks.indexedDB.on //!
+            e.target.transaction.onerror = html5rocks.indexedDB.onerror;
+
             if(db.objectStoreNames.contains(DB_NAME)) {
             db.deleteObjectStore(DB_NAME);
             }
-            db.createObjectStore(DB_NAME, {keyPath:'id'})
+
+            db.createObjectStore(DB_NAME, {keyPath:'id'});
         };
-        request.onsuccess = (e) => {
+        request.onsuccess = function(e) {
+            html5rocks.indexedDB.db = e.target.result;
+            resolve()
+        };
+
+        request.onerror = (e) => {
             reject(Error(e))
         };
         
     })
 };
+
 function addItem (item) {
     const db = html5rocks.indexedDB.db;
     const trans = db.transaction([DB_NAME], 'readwrite');
@@ -60,7 +68,25 @@ function deleteItem (id) {
 
 function getItems () {
     return new Promise((resolve, reject) => {
-        
+        let db = html5rocks.indexedDB.db;
+        if(!db) {
+            reject(Error('No db'))
+        }
+        const trans = db.transaction([DB_NAME], 'readwrite');
+        const store = trans.objectStore(DB_NAME);
+
+        const getAllRequest = store.getAll();
+        getAllRequest.onsuccess = () => {
+            resolve(getAllRequest.result);
+
+        }
     })
     
+};
+
+export{
+    open,
+    addItem,
+    getItems,
+    deleteItem
 }
