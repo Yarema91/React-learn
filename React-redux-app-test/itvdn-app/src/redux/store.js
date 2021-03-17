@@ -1,17 +1,17 @@
 import {createStore, applyMiddleware, combineReducers, compose} from 'redux';
-import thunk from 'redux';
+import thunk from 'redux-thunk';
 import reduxLogger from  'redux-logger';
 import rootReducers from './modules/index'
 
-const configureStore = (redusers= {}, preLoadedState = {}, applyMiddlewares = [] ) => createStore(
-    combineReducers(
+const configureStore = (reducers = {}, preLoadedState = {}, middlewares = [] ) => createStore(
+    combineReducers({
         ...rootReducers,
-        ...redusers
-        ),
+        ...reducers
+    }),
         preLoadedState,
         compose(
             applyMiddleware(
-                ...middlewares,
+               ...middlewares,
                 thunk,
                 reduxLogger
             ),
