@@ -38,19 +38,37 @@ function open() {
     })
 };
 
-function addItem (item) {
-    const db = html5rocks.indexedDB.db;
-    const trans = db.transaction([DB_NAME], 'readwrite');
-    const store = trans.objectStore(DB_NAME);
+// function addItem (item) {
+//     const db = html5rocks.indexedDB.db;
+//     const trans = db.transaction([DB_NAME], 'readwrite');
+//     const store = trans.objectStore(DB_NAME);
 
-    const request = store.put(item);
-    request.onsuccess = (e) => {
-        console.log('success');
-    };
-    request.onerror = (e) => {
-        console.log('error adding: ', e);
-    };
-};
+//     const request = store.put(item);
+//     request.onsuccess = (e) => {
+//         console.log('success');
+//     };
+//     request.onerror = (e) => {
+//         console.log('error adding: ', e);
+//     };
+// };
+function addItem(item) {
+    return new Promise((resolve, reject) => {
+      const db = html5rocks.indexedDB.db;
+      const trans = db.transaction([DB_NAME], "readwrite");
+      const store = trans.objectStore(DB_NAME);
+  
+      const request = store.put(item);
+  
+      request.onsuccess = function(e) {
+        resolve()
+      };
+  
+      request.onerror = function(e) {
+        reject(e)
+      };
+    })
+  };
+
 
 function deleteItem (id) {
     const db = html5rocks.indexedDB.db;
@@ -84,9 +102,12 @@ function getItems () {
     
 };
 
+const updateItem = (item) => addItem(item);
+
 export{
     open,
     addItem,
     getItems,
-    deleteItem
+    deleteItem,
+    updateItem
 }

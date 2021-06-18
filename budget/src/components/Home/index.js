@@ -1,67 +1,45 @@
-import { Component } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+
 import Balance from '../Balance';
 import Transactions from '../Transactions';
 import Form from '../Form';
 import ErrorBoundary from '../ErrorBoundary';
-import { Wrapper } from './styles';
-import {getItems, addItem} from '../../utils/indexdb';
+
+import { Wrapper } from './styles'
+import { STATUSES } from '../../constants';
+import { useData } from '../../hooks';
 
 
-class Home extends Component {
-    constructor() {
-        super();
 
-        this.state = {
-            balance: 0,
-            transactions: []
-        }
+const Home = () => {
+    const [balance, setBalance]  = useState(0);
+    const { transactions, status, pushTransaction, onDelete, onStarClick } = useData();
 
-        this.onChange = this.onChange.bind(this);
-        console.log('constructor');
-    }
+    const onChange = (transaction) => {
+        pushTransaction(transaction);
+        setBalance(balance + Number(transaction.value))
+    };
 
-    componentDidMount() {
-        getItems().then((transactions) => { 
-            this.setState({
-                transactions
-            })
-        }).catch((e) => {
-            debugger
-        })
-    }
-
-
-    onChange = ({value, date, comment}) => {
-        const transaction = {
-            value: +value,
-             comment,
-                date,
-                id: Date.now()
-        }
-
-        this.setState((state) => ({
-            balance: state.balance + Number(value),
-            transactions: [
-                transaction,    
-            ...state.transactions]
-        })); 
-
-        addItem(transaction);
-    }
-
-    render() {
-        console.log('render');
         return (
             <ErrorBoundary>
-                <Wrapper >
-                    <Balance balance={this.state.balance} />
-                    <Form onChange={this.onChange} />
-                    <hr />
-                    <Transactions transactions={this.state.transactions}   />
+                <Wrapper>
+                    <Balance balance={balance}/>
+                    <Form onChange={onChange}/>
+                    <hr/>
+                    {status === STATUSES.PENDING ? (
+                        <div>Loading...</div>
+                    ): null}
+
+                    {status === STATUSES.SUCCESS ? (
+                        <Transactions transactions={transactions} 
+                        onDelete={onDelete}
+                        onStarClick={onStarClick}/>
+
+                    ): null}
+                    
                 </Wrapper>
             </ErrorBoundary>
         )
-    }
-}
+  }
 
-export default Home;
+  export default Home;
