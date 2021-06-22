@@ -11,10 +11,22 @@ class TaskList extends Component {
             { text: 'Buy cigarete', done: true, id: 4 },
         ]
     }
-    onCreate= ({value}) => (
+    componentDidMount() {
+        this.fetchTasksList();
+    }
+    fetchTasksList() {
+        fetch(baseUrl).then()
+    }
 
-    )
     
+
+    onCreate = text => {
+        // 1.Create task object
+        // 2.Post object to server
+        // 3. Fetch list from server
+        // const { tasks } = this.state
+    }
+
     render() {
         return (
             <div className='todo-list'>
