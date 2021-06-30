@@ -5,11 +5,11 @@ const defaultFormValues = {
     imageUrl: '',
     name: '',
     count: null,
-    //         // size: {
-    //         //     width: '',
-    //         //     height: ''
-    //         // },
-    // weight: null
+            size: {
+                width: null,
+                height: null
+            },
+    weight: null
 };
 
 
@@ -35,7 +35,12 @@ const ListProducts = ({ addProd }) => {
         setProductInput({
             imageUrl: '',
             name: '',
-            count: ''
+            count: '',
+            size: {
+                width: '',
+                height: ''
+            },
+            weight: ''
 
         })
     }
@@ -48,7 +53,7 @@ const ListProducts = ({ addProd }) => {
     }
 
 
-    console.log('test', defaultFormValues);
+    // console.log('test', state);
     console.log(productInput.imageUrl, productInput.name);
 
     return (
@@ -100,36 +105,39 @@ const ListProducts = ({ addProd }) => {
                     />
                 </div>
 
-                {/* <div><span>Size</span>
+                <div><span>Size</span>
                 <input
                     type="number"
                     className='input'
                     text='name'
+                    name='width'
                     placeholder='width'
-                    // value={width}
-                    onChange={handleChange}
+                    value={productInput.width}
+                    onChange={onChangeHandler}
                     onKeyPress={handleKeyPress}
                 />
                 <input type="number"
                     className='input'
                     text='name'
+                    name='height'
                     placeholder='height'
-                    // value={productInput.size.height}
-                    onChange={handleChange}
+                    value={productInput.height}
+                    onChange={onChangeHandler}
                     onKeyPress={handleKeyPress}
                 />
-            </div> */}
+            </div>
 
-                {/* <div><span> Weight</span>
+                <div><span> Weight</span>
                 <input
                     type="number"
                     className='input'
                     text='name'
+                    name='weight'
                     placeholder='weight'
                     value={productInput.weight}
-                    onChange={handleChange}
+                    onChange={onChangeHandler}
                 />
-            </div> */}
+            </div>
                 <button>Зберегти</button>
             </div>
 

@@ -7,7 +7,9 @@ const Product = ({product, toggle, removeProd}) => {
             >
                 {product.imageUrl},
                 name: {product.name},
-                count: {product.count} 
+                count: {product.count},
+                size: {product.width}, {product.height},
+                weight: {product.weight}g
                 <button className="item-delete" onClick={()=> removeProd(product.id)}>delete</button>
             </div>
            

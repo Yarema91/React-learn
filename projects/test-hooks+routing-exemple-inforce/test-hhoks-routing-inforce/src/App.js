@@ -5,9 +5,9 @@ import ListProducts from './ListProducts';
 import Product from './Product';
 
 const defaulProducts = [
-  { id: 1, imageUrl: 'link', name: 'Iphone 7plus ', count: 3, coments: [] },
-  { id: 2, imageUrl: 'link', name: 'Apple watch ', count: 4, comments: [] },
-  { id: 3, imageUrl: 'link', name: 'Apple 12 ', count: 1, comments: [] }
+  { id: 1, imageUrl: 'link', name: 'Iphone 7plus ', count: 3, width: 300, height: 400, weight: 200, coments: [] },
+  { id: 2, imageUrl: 'link', name: 'Apple watch ', count: 4, width: 230, height: 400,weight: 120, comments: [] },
+  { id: 3, imageUrl: 'link', name: 'Apple 12 ', count: 1, size: {}, weight: 220, comments: [] }
 ]
 
 function App() {
@@ -28,9 +28,10 @@ function App() {
         imageUrl: productInput.imageUrl,
         name: productInput.name,
         count: productInput.count,
-        // size: 
+        width: productInput.width,
+        height: productInput.height,
         // { width: width, height: height },
-        // weight: weight,
+        weight: productInput.weight,
         comments: []
       }
       setState({SortOrder: 1, products: [...state.products, newProd]})
