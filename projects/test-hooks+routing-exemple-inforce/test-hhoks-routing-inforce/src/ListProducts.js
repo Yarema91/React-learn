@@ -17,32 +17,36 @@ const ListProducts = ({ addProd }) => {
 
     const [productInput, setProductInput] = useState(defaultFormValues)
 
-    // const handleChangeUrl = (e) => {
-    //     console.log(e.currentTarget.value);
-    //     setProductInput( {url: e.currentTarget.value} )
-    //     // setImageURLInput(e.currentTarget.value)
-    //     // setnameInput(e.currentTarget.value)
-    // }
-
+    //handleChange
     const onChangeHandler = useCallback(
         ({target:{name,value}}) => setProductInput(productInput => ({ ...productInput, [name]:value }), [])
       );
 
+      
     const handleSubmit = (e) => {
-        // console.log('1', productInput);
-        e.preventDefault()
-        addProd(productInput)
-        setProductInput({
-            imageUrl: '',
-            name: '',
-            count: '',
-            size: {
-                width: '',
-                height: ''
-            },
-            weight: ''
 
-        })
+        //validation
+        let isValide = (productInput.name != '')
+        &&(productInput.count != '')&&(productInput.imageUrl != '')
+        &&(productInput.width != '')&&(productInput.height != '')
+        &&(productInput.weight != '')   
+
+        if(isValide ){
+            e.preventDefault()
+
+            addProd(productInput)
+            setProductInput({
+                imageUrl: '',
+                name: '',
+                count: '',
+                    width: '',
+                    height: '',
+                weight: ''
+    
+            })
+        }else{
+            e.preventDefault()
+        alert('error .. ')}
     }
 
 
@@ -53,8 +57,7 @@ const ListProducts = ({ addProd }) => {
     }
 
 
-    // console.log('test', state);
-    console.log(productInput.imageUrl, productInput.name);
+    // console.log(productInput.imageUrl, productInput.name);
 
     return (
         <form action="create-form" onSubmit={handleSubmit}>
