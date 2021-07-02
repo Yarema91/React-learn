@@ -41,7 +41,7 @@ function App() {
   }
 
   const addProd = (productInput) => {
-   
+
     if (productInput) {
       const newProd = {
         id: Math.random().toString(36).substr(2, 9),
@@ -56,14 +56,14 @@ function App() {
       setState({ ...state, products: [...state.products, newProd] })
     }
   }
-  
+
 
   const removeProd = (id, name) => {
-    if(window.confirm(`Do you really remove this product?`) ) { //${state.product.name}
-    setState({ ...state, products: [...state.products.filter(product => product.id !== id)] })
+    if (window.confirm(`Do you really remove this product?`)) { //${state.product.name}
+      setState({ ...state, products: [...state.products.filter(product => product.id !== id)] })
 
     }
-   
+
   }
 
 
@@ -132,12 +132,13 @@ function App() {
       <ListProducts addProd={addProd} />
       <hr />
       <h1>List prodocts: {sortedProd.length}</h1>
-      <p>
-
+      <div>
         <p>{state.SortOrder}{state.sortKey} </p>
         <button className='btn_sortByName' onClick={sortByName}>Sort by Name</button>
         <button className='btn_sortByCount' onClick={sortByCount}>Sort by Count</button>
-      </p>
+        <p></p>
+      </div>
+
       {sortedProd.map((product) => {
         return (
           <Product

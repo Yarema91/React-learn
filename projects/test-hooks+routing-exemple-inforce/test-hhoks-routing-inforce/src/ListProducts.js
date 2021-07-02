@@ -4,12 +4,12 @@ import { useState, useCallback } from 'react';
 const defaultFormValues = {
     imageUrl: '',
     name: '',
-    count: null,
+    count: '',
             size: {
-                width: null,
-                height: null
+                width: '',
+                height: ''
             },
-    weight: null
+    weight: ''
 };
 
 
@@ -26,10 +26,10 @@ const ListProducts = ({ addProd }) => {
     const handleSubmit = (e) => {
 
         //validation
-        let isValide = (productInput.name != '')
-        &&(productInput.count != '')&&(productInput.imageUrl != '')
-        &&(productInput.width != '')&&(productInput.height != '')
-        &&(productInput.weight != '')   
+        let isValide = (productInput.name !== '')
+        &&(productInput.count !== '')&&(productInput.imageUrl !== '')
+        &&(productInput.width !== '')&&(productInput.height !=='')
+        &&(productInput.weight !== '')   
 
         if(isValide ){
             e.preventDefault()
@@ -92,7 +92,7 @@ const ListProducts = ({ addProd }) => {
                         onChange={onChangeHandler }
                         onKeyPress={(e) => handleKeyPress(e.target.value)}
                     />
-                    {/* {errors.name && <p>{errors.name.messagge} This is required</p>} */}
+
                 </div>
 
                 <div><span>Count</span>
