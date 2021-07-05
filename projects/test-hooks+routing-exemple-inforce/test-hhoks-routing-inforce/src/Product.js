@@ -1,3 +1,4 @@
+import React from "react"
 const Product = ({product, toggle, removeProd}) => {
     return (
         <div key={product.id} className='item-prod'>

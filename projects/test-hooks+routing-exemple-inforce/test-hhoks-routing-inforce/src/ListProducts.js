@@ -1,5 +1,20 @@
-import { useState, useCallback } from 'react';
+import React,{ useState, useCallback } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 // import { useForm } from 'react-hook-form'
+
+const useStyles = makeStyles((theme) => ({
+    root: `
+      background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
+      border-radius: 3px;
+      font-size: 16px;
+      border: 0;
+      color: white;
+      height: 48px;
+      padding: 0 30px;
+      box-shadow: 0 3px 5px 2px rgba(255, 105, 135, 0.3);
+    `,
+  }));
 
 const defaultFormValues = {
     imageUrl: '',
@@ -16,6 +31,8 @@ const defaultFormValues = {
 const ListProducts = ({ addProd }) => {
 
     const [productInput, setProductInput] = useState(defaultFormValues)
+
+    const classes = useStyles();
 
     //handleChange
     const onChangeHandler = useCallback(
@@ -77,8 +94,7 @@ const ListProducts = ({ addProd }) => {
                         onChange={onChangeHandler }
                         onKeyPress={(e) => handleKeyPress(e.target.value)}
                     />
-                    {/* <input type="file" id="input" multiple  //download file
-                    ></input> */}
+                     {/* <p> {errors.imageUrl?.message} </p> */}
                 </div>
                 <div><span>Name</span>
                     <input
@@ -141,7 +157,8 @@ const ListProducts = ({ addProd }) => {
                     onChange={onChangeHandler}
                 />
             </div>
-                <button>Зберегти</button>
+            {/* <Button variant="contained" color="primary">Save </Button> */}
+                <button>Save</button>
             </div>
 
         </form>

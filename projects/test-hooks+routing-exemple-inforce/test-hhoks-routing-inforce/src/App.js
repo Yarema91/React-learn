@@ -1,12 +1,12 @@
-import { useState } from 'react';
+import React,{ useState } from 'react';
 import './App.css';
 import ListProducts from './ListProducts';
 import Product from './Product';
 
 const defaulProducts = [
-  { id: 1, imageUrl: 'link', name: 'Iphone 7plus ', count: 3, width: 300, height: 400, weight: 200, coments: [] },
-  { id: 2, imageUrl: 'link', name: 'Apple watch ', count: 4, width: 88, height: 40, weight: 120, comments: [] },
-  { id: 3, imageUrl: 'link', name: 'Apple 12 ', count: 1, width: 450, height: 230, weight: 220, comments: [] }
+  { id: 1, imageUrl: 'https://source.unsplash.com/1600x900/?iphone', name: 'Iphone 7plus ', count: 6, width: 300, height: 400, weight: 200, coments: [] },
+  { id: 2, imageUrl: 'https://source.unsplash.com/1600x900/?Macbook', name: 'Macbook ', count: 4, width: 88, height: 40, weight: 120, comments: [] },
+  { id: 3, imageUrl: 'https://source.unsplash.com/1600x900/?applewatch', name: 'Apple Watch ', count: 1, width: 450, height: 230, weight: 220, comments: [] }
 ]
 
 function App() {
