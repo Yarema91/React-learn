@@ -3,13 +3,15 @@ import FormProduct from './FormProduct';
 import ProductItem from './ProductItem';
 import Modal from './Components/Modal';
 
-
-
 import { makeStyles } from '@material-ui/core/styles';
+import { Grid, Container, Card } from '@material-ui/core';
 // import { Button, TextField, DialogTitle, Dialog, DialogContent, DialogActions, DialogContentText} from '@material-ui/core';
 
 
-
+const useStyles = makeStyles((theme) => ({
+    root: {
+    },
+}));
 
 const defaulProducts = [
     { id: 1, imageUrl: 'https://source.unsplash.com/1600x900/?iphone', name: 'Iphone 7plus ', count: 6, width: 300, height: 400, weight: 200, coments: [] },
@@ -18,6 +20,8 @@ const defaulProducts = [
 ]
 
 const ListProducts = () => {
+
+    const classes = useStyles();
 
     const [state, setState] = useState(
         {
@@ -48,7 +52,7 @@ const ListProducts = () => {
     }
 
     //add product
-    const addProd = (productInput, onClose) => {
+    const addProd = (productInput) => {
 
         if (productInput) {
             const newProd = {
@@ -61,10 +65,6 @@ const ListProducts = () => {
                 weight: productInput.weight,
                 comments: []
             }
-
-            //close modal?
-          
-            
             setState({ ...state, products: [...state.products, newProd] })
         }
     }
@@ -104,35 +104,70 @@ const ListProducts = () => {
 
     return (
         <div>
-                 
-            <h2>New product</h2>
+            {/* <h2>New product</h2>
             <FormProduct addProd={addProd}/>
-           
-            <hr />
+            <hr /> */}
+
             <h1>List prodocts: {sortedProd.length}</h1>
             <div>
                 <Modal title='Create product' > 
-                    <FormProduct addProd={addProd} />
+                   <FormProduct addProd={addProd} />
                 </Modal>
 
                 <p>{state.SortOrder}{state.sortKey} </p>
                 <button className='btn_sortByName' onClick={sortByName}>Sort by Name</button>
                 <button className='btn_sortByCount' onClick={sortByCount}>Sort by Count</button>
                 <p></p>
-
             </div>
-            {sortedProd.map((product) => {
-                return (
-                    <ProductItem
+            {/* container spacing={2} justify='center' */}
+            <Container className={classes.cardGrid} maxWidht='md'>
+                <Grid container spacing={4} >
+                { sortedProd.map((product) => (
+                    <Grid item  xs='12' sm='6' md='4'>
+                        <Card onClick={ () => {console.log('details')}}>
+                        <ProductItem
                         product={product}
                         key={[product.id]}
                         // toggle={handleToggle}
                         removeProd={removeProd}
                     />
+                        </Card>
+                    </Grid>
                 )
-            })}
+            )}
+                </Grid>
+            </Container>
+            {/* {sortedProd.map((product) => {
+
+        
+return (
+    <ProductItem
+        product={product}
+        key={[product.id]}
+        // toggle={handleToggle}
+        removeProd={removeProd}
+    />
+)
+})} */}
+
+
+           
         </div>
     )
 }
 
 export default ListProducts
+
+
+
+
+// class Person {
+//     constructor() {
+//       this.firstName = "Mike";
+//       this.lastName = "Patel";
+  
+//       this.getName = () => {
+//         return this.firstName + " " + this.lastName;
+//       };
+//     }
+//   }

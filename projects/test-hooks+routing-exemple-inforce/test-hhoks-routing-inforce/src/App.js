@@ -20,7 +20,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={ListProducts} />
           <Route path="/newform" component={FormProduct} />
-          <Route path="/details" component={Details} />
+          <Route path="/details/:id" component={Details} />  
           {/* delete */}
           {/* edit */}
         </Switch>
@@ -31,3 +31,6 @@ function App() {
 }
 
 export default App;
+
+
+//let { id } = useParams();

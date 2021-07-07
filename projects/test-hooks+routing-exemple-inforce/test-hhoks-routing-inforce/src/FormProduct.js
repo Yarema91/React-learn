@@ -133,9 +133,8 @@ const FormProduct = ({ addProd }) => {
                         onKeyPress={handleKeyPress}
                     />
                     </div>
-                    <div>
+                <div>
                     <TextField
-                     
                      margin="dense"
                         type="number"
                         text='name'

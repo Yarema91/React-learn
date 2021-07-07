@@ -3,6 +3,7 @@ import DeleteAlert from './Components/DeleteAlert'
 
 
 const ProductItem = ({product, removeProd}) => {
+  
     return (
         <div key={product.id} className='item-prod'>
             <div 
