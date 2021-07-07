@@ -1,5 +1,8 @@
 import React from "react"
-const Product = ({product, toggle, removeProd}) => {
+import DeleteAlert from './Components/DeleteAlert'
+
+
+const ProductItem = ({product, removeProd}) => {
     return (
         <div key={product.id} className='item-prod'>
             <div 
@@ -12,11 +15,14 @@ const Product = ({product, toggle, removeProd}) => {
                 count: {product.count},
                 size: ({product.width} x {product.height})sm,
                 weight: {product.weight}g
-                <button className="item-delete" onClick={()=> removeProd(product.id)}>delete</button>
+                {/* <button className="item-details" onClick={() => {}}>delails</button> */}
+                <button className="item-delete" onClick={(e)=> removeProd(e, product.id)}>delete</button>
+                {/* <DeleteAlert/> */}
+          
                 </form>
             </div>
            
         </div>
     )
 }
-export default Product
+export default ProductItem

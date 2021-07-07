@@ -1,167 +1,137 @@
-import React,{ useState, useCallback } from 'react';
+import React, { useState } from 'react';
+import FormProduct from './FormProduct';
+import ProductItem from './ProductItem';
+import Modal from './Components/Modal';
+
+
+
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-// import { useForm } from 'react-hook-form'
-
-const useStyles = makeStyles((theme) => ({
-    root: `
-      background: linear-gradient(45deg, #fe6b8b 30%, #ff8e53 90%);
-      border-radius: 3px;
-      font-size: 16px;
-      border: 0;
-      color: white;
-      height: 48px;
-      padding: 0 30px;
-      box-shadow: 0 3px 5px 2px rgba(255, 105, 135, 0.3);
-    `,
-  }));
-
-const defaultFormValues = {
-    imageUrl: '',
-    name: '',
-    count: '',
-            size: {
-                width: '',
-                height: ''
-            },
-    weight: ''
-};
+// import { Button, TextField, DialogTitle, Dialog, DialogContent, DialogActions, DialogContentText} from '@material-ui/core';
 
 
-const ListProducts = ({ addProd }) => {
 
-    const [productInput, setProductInput] = useState(defaultFormValues)
 
-    const classes = useStyles();
+const defaulProducts = [
+    { id: 1, imageUrl: 'https://source.unsplash.com/1600x900/?iphone', name: 'Iphone 7plus ', count: 6, width: 300, height: 400, weight: 200, coments: [] },
+    { id: 2, imageUrl: 'https://source.unsplash.com/1600x900/?Macbook', name: 'Macbook ', count: 4, width: 88, height: 40, weight: 120, comments: [] },
+    { id: 3, imageUrl: 'https://source.unsplash.com/1600x900/?applewatch', name: 'Apple Watch ', count: 1, width: 450, height: 230, weight: 220, comments: [] }
+]
 
-    //handleChange
-    const onChangeHandler = useCallback(
-        ({target:{name,value}}) => setProductInput(productInput => ({ ...productInput, [name]:value }), [])
-      );
+const ListProducts = () => {
 
-      
-    const handleSubmit = (e) => {
+    const [state, setState] = useState(
+        {
+            SortOrder: 1,
+            products: defaulProducts,
+            sortKey: 'name',
+            newproductform: { name: 'car', weight: 4 }
+        });
 
-        //validation
-        let isValide = (productInput.name !== '')
-        &&(productInput.count !== '')&&(productInput.imageUrl !== '')
-        &&(productInput.width !== '')&&(productInput.height !=='')
-        &&(productInput.weight !== '')   
 
-        if(isValide ){
-            e.preventDefault()
-
-            addProd(productInput)
-            setProductInput({
-                imageUrl: '',
-                name: '',
-                count: '',
-                    width: '',
-                    height: '',
-                weight: ''
-    
+    //default sort
+    let sortedProd;
+    if (state.sortKey === 'name') {
+        sortedProd = state.products
+            .sort(function (a, b) {
+                if (a.name.toLowerCase() < b.name.toLowerCase()) return -state.SortOrder || 1;
+                if (a.name.toLowerCase() > b.name.toLowerCase()) return state.SortOrder;
+                return 0;
             })
-        }else{
-            e.preventDefault()
-        alert('error .. ')}
+    }
+    else {
+        sortedProd = [...state.products]
+            .sort(function (a, b) {
+                if (a.count < b.count) return -state.SortOrder;
+                if (a.count > b.count) return state.SortOrder;
+                return 0;
+            });
     }
 
+    //add product
+    const addProd = (productInput, onClose) => {
 
-    const handleKeyPress = (e) => {
-        if (e.key === "Enter") {
-            handleSubmit(e)
+        if (productInput) {
+            const newProd = {
+                id: Math.random().toString(36).substr(2, 9),
+                imageUrl: productInput.imageUrl,
+                name: productInput.name,
+                count: productInput.count,
+                width: productInput.width,
+                height: productInput.height,
+                weight: productInput.weight,
+                comments: []
+            }
+
+            //close modal?
+          
+            
+            setState({ ...state, products: [...state.products, newProd] })
+        }
+    }
+
+    //delete product
+    const removeProd = ( event, id, name) => {
+        event.preventDefault();
+        console.log(event, id, name);
+        if (window.confirm(`Do you really remove this product?`)) { //${state.product.name}
+
+            setState({ ...state, products: [...state.products.filter(product => product.id !== id)] })
         }
     }
 
 
-    // console.log(productInput.imageUrl, productInput.name);
+    //sortByName
+    const sortByName = (name) => {
+
+        const sorted = [...state.products]
+        console.log('sort');
+        setState({ products: sorted, SortOrder: -state.SortOrder, sortKey: 'name' });
+    }
+
+    //sortByCount
+    const sortByCount = (count) => {
+
+        // console.log('count');
+        const sortedCount = [...state.products]
+            .sort(function (a, b) {
+                if (a.count < b.count) return -state.SortOrder;
+                if (a.count > b.count) return state.SortOrder;
+                // return b.count - a.count;
+                return 0;
+            });
+        setState({ products: sortedCount, SortOrder: -state.SortOrder, sortKey: 'count' });
+    }
 
     return (
-        <form action="create-form" onSubmit={handleSubmit}>
+        <div>
+                 
+            <h2>New product</h2>
+            <FormProduct addProd={addProd}/>
+           
+            <hr />
+            <h1>List prodocts: {sortedProd.length}</h1>
             <div>
-                <div>
-                    <span>Add photo</span>
-                    <input
-                        className='input'
-                        name='imageUrl'
-                        key="imageUrl"
-                        type="text"
-                        text='name'
-                        placeholder='url address images'
-                        // {...register('imageUrl')}
-                        value={productInput.imageUrl}
+                <Modal title='Create product' > 
+                    <FormProduct addProd={addProd} />
+                </Modal>
 
-                        onChange={onChangeHandler }
-                        onKeyPress={(e) => handleKeyPress(e.target.value)}
-                    />
-                     {/* <p> {errors.imageUrl?.message} </p> */}
-                </div>
-                <div><span>Name</span>
-                    <input
-                        key="name"
-                        className='input'
-                        name='name'
-                        type="text" text='name'
-                        placeholder='name'
-                        value={productInput.name}
-                        // {...register('name'), {required: true}}
-                        onChange={onChangeHandler }
-                        onKeyPress={(e) => handleKeyPress(e.target.value)}
-                    />
+                <p>{state.SortOrder}{state.sortKey} </p>
+                <button className='btn_sortByName' onClick={sortByName}>Sort by Name</button>
+                <button className='btn_sortByCount' onClick={sortByCount}>Sort by Count</button>
+                <p></p>
 
-                </div>
-
-                <div><span>Count</span>
-                    <input
-                        type="number"
-                        className='input'
-                        name='count'
-                        text='name'
-                        placeholder='count'
-                        value={productInput.count}
-                        onChange={onChangeHandler }
-                        onKeyPress={handleKeyPress}
-                    />
-                </div>
-
-                <div><span>Size</span>
-                <input
-                    type="number"
-                    className='input'
-                    text='name'
-                    name='width'
-                    placeholder='width'
-                    value={productInput.width}
-                    onChange={onChangeHandler}
-                    onKeyPress={handleKeyPress}
-                />
-                <input type="number"
-                    className='input'
-                    text='name'
-                    name='height'
-                    placeholder='height'
-                    value={productInput.height}
-                    onChange={onChangeHandler}
-                    onKeyPress={handleKeyPress}
-                />
             </div>
-
-                <div><span> Weight</span>
-                <input
-                    type="number"
-                    className='input'
-                    text='name'
-                    name='weight'
-                    placeholder='weight'
-                    value={productInput.weight}
-                    onChange={onChangeHandler}
-                />
-            </div>
-            {/* <Button variant="contained" color="primary">Save </Button> */}
-                <button>Save</button>
-            </div>
-
-        </form>
+            {sortedProd.map((product) => {
+                return (
+                    <ProductItem
+                        product={product}
+                        key={[product.id]}
+                        // toggle={handleToggle}
+                        removeProd={removeProd}
+                    />
+                )
+            })}
+        </div>
     )
 }
 
